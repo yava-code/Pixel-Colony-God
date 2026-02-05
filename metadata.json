@@ -1,0 +1,5 @@
+{
+  "name": "Pixel Colony God",
+  "description": "A pixel-art god simulation game where you manage a colony of little figures, completing dynamic quests by manipulating their population and age.",
+  "requestFramePermissions": []
+}
