@@ -43,3 +43,18 @@ export interface GameStats {
   avgAge: number;
   maxAge: number;
 }
+
+export interface Particle {
+  id: string;
+  pos: Vector2;
+  vel: Vector2;
+  color: string;
+  life: number;
+  size: number;
+}
+
+export interface HighScore {
+  date: number;
+  score: number;
+  population: number;
+}

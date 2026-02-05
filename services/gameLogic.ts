@@ -1,4 +1,4 @@
-import { Peep, PeepState, Quest, QuestType, Vector2 } from '../types';
+import { Peep, PeepState, Quest, QuestType, Vector2, Particle } from '../types';
 
 const MAP_WIDTH = 800;
 const MAP_HEIGHT = 600;
@@ -27,7 +27,9 @@ export const createPeep = (x: number, y: number, ageOverride?: number): Peep => 
   };
 };
 
-export const updatePeep = (peep: Peep, bounds: { width: number; height: number }): Peep => {
+export const updatePeep = (peep: Peep, bounds: { width: number; height: number }, isPaused: boolean = false): Peep => {
+  if (isPaused) return peep;
+
   let { pos, vel, state, stateTimer, age } = peep;
   let newPos = { ...pos };
   let newVel = { ...vel };
@@ -63,12 +65,6 @@ export const updatePeep = (peep: Peep, bounds: { width: number; height: number }
     if (newPos.y < 0) { newPos.y = 0; newVel.y *= -1; }
     if (newPos.y > bounds.height - peep.size) { newPos.y = bounds.height - peep.size; newVel.y *= -1; }
   }
-
-  // Very slow aging (1 year every ~600 frames/10 seconds at 60fps)
-  // To make it noticeable in game, let's say 1 year every 5 seconds (300 frames)
-  // We won't increment actual age property here continuously to avoid float issues, 
-  // but we assume the game loop handles an "age ticker" externally or we just rely on tools.
-  // For simplicity, let's keep age static unless modified by god tools.
 
   return {
     ...peep,
@@ -133,4 +129,24 @@ export const checkQuestCompletion = (quest: Quest, peeps: Peep[]): boolean => {
     default:
       return false;
   }
+};
+
+export const createExplosion = (x: number, y: number, color: string, count: number = 8): Particle[] => {
+  return Array.from({ length: count }).map(() => ({
+    id: Math.random().toString(36).substr(2, 9),
+    pos: { x, y },
+    vel: { x: (Math.random() - 0.5) * 5, y: (Math.random() - 0.5) * 5 },
+    color,
+    life: 1.0,
+    size: Math.random() * 4 + 2,
+  }));
+};
+
+export const updateParticle = (p: Particle): Particle => {
+  return {
+    ...p,
+    pos: { x: p.pos.x + p.vel.x, y: p.pos.y + p.vel.y },
+    life: p.life - 0.02,
+    vel: { x: p.vel.x * 0.9, y: p.vel.y * 0.9 + 0.1 }, // friction + gravity
+  };
 };
