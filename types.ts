@@ -1,8 +1,59 @@
 export type Vector2 = { x: number; y: number };
 
-export enum PeepState {
-  IDLE = 'IDLE',
-  WALKING = 'WALKING',
+export enum ElementType {
+  EMPTY = 'EMPTY',
+  SAND = 'SAND',
+  WATER = 'WATER',
+  FIRE = 'FIRE',
+  ICE = 'ICE',
+  STEAM = 'STEAM',
+  LAVA = 'LAVA',
+  STONE = 'STONE',
+  WOOD = 'WOOD',
+  PLANT = 'PLANT',
+  ACID = 'ACID',
+}
+
+export interface Element {
+  type: ElementType;
+  color: string;
+  temperature: number;
+  age: number;
+  velocity?: Vector2;
+}
+
+export enum BrushMode {
+  POINT = 'POINT',
+  LINE = 'LINE',
+  CIRCLE = 'CIRCLE',
+  SPRAY = 'SPRAY',
+}
+
+export enum ToolType {
+  DRAW = 'DRAW',
+  ERASE = 'ERASE',
+  GRAB = 'GRAB',
+  FOUNTAIN = 'FOUNTAIN',
+}
+
+export interface CanvasState {
+  elements: (Element | null)[][];
+  width: number;
+  height: number;
+}
+
+export interface SandboxSettings {
+  brushSize: number;
+  brushMode: BrushMode;
+  gravity: number;
+  temperature: number;
+  soundEnabled: boolean;
+  particleQuality: 'low' | 'medium' | 'high';
+}
+
+export interface PeepState {
+  IDLE: 'IDLE';
+  WALKING: 'WALKING';
 }
 
 export interface Peep {
@@ -11,8 +62,8 @@ export interface Peep {
   vel: Vector2;
   age: number;
   color: string;
-  state: PeepState;
-  stateTimer: number; // Frames until next state change
+  state: keyof PeepState;
+  stateTimer: number;
   size: number;
 }
 
@@ -21,21 +72,13 @@ export enum QuestType {
   RAISE_POPULATION = 'RAISE_POPULATION',
   LOWER_AVG_AGE = 'LOWER_AVG_AGE',
   RAISE_AVG_AGE = 'RAISE_AVG_AGE',
-  PURGE_ELDERS = 'PURGE_ELDERS', // No one over X age
+  PURGE_ELDERS = 'PURGE_ELDERS',
 }
 
 export interface Quest {
   type: QuestType;
   target: number;
   description: string;
-}
-
-export enum Tool {
-  SELECT = 'select',
-  KILL = 'kill',
-  AGE_UP = 'age_up',
-  AGE_DOWN = 'age_down',
-  SPAWN = 'spawn',
 }
 
 export interface GameStats {
@@ -57,4 +100,23 @@ export interface HighScore {
   date: number;
   score: number;
   population: number;
+}
+
+export interface UserProfile {
+  id: string;
+  username?: string;
+  avatarColor: string;
+  theme: 'dark' | 'light';
+  soundEnabled: boolean;
+  notificationsEnabled: boolean;
+}
+
+export interface SavedCreation {
+  id: string;
+  title: string;
+  description?: string;
+  canvasData: string;
+  thumbnail?: string;
+  isPublic: boolean;
+  createdAt: string;
 }
