@@ -5,6 +5,7 @@ import ElementSelector from './components/ElementSelector';
 import Toolbar from './components/Toolbar';
 import SettingsPanel from './components/SettingsPanel';
 import SaveModal from './components/SaveModal';
+import AIImagePanel from './components/AIImagePanel';
 import { useSandboxStore } from './services/store';
 import { Save, RotateCcw } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -44,6 +45,7 @@ const App: React.FC = () => {
         >
           <ElementSelector />
           <Toolbar />
+          <AIImagePanel />
         </motion.div>
 
         {/* Center Canvas */}
@@ -85,6 +87,22 @@ const App: React.FC = () => {
         onSave={handleSave}
         canvasRef={canvasRef}
       />
+
+      {/* pollinations.ai credit */}
+      <div className="fixed bottom-3 right-3 z-30">
+        <a
+          href="https://pollinations.ai"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Built With pollinations.ai"
+        >
+          <img
+            src="https://pollinations.ai/badge"
+            alt="Built With pollinations.ai"
+            className="h-8 opacity-70 hover:opacity-100 transition-opacity pixel-art"
+          />
+        </a>
+      </div>
     </div>
   );
 };
